@@ -4,6 +4,7 @@ import MensajeModel, { IMensajeModel } from '../models/Mensaje';
 
 export class MensajeService {
     private io: SocketIOServer;
+    private usuariosConectados: Map<string, string[]> = new Map();
 
     constructor(io: SocketIOServer) {
         this.io = io;
