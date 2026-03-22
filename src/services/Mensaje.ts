@@ -16,6 +16,8 @@ export class MensajeService {
     public inicializarSockets(): void {
         this.io.on('connection', (socket: Socket) => {
             Logging.info(`Socket conectado: ${socket.id}`);
+            this.agregarConexionUsuario(socket.handshake.query.username as string, socket.id);
+            this.io.emit('online-users', Array.from(this.usuariosConectados.keys()));
 
             /* 
             // Unirse a una sala de organización (DESACTIVADO PARA CHAT GLOBAL)
@@ -65,9 +67,16 @@ export class MensajeService {
                 }
             });
 
+            socket.on('get-online-users', () => {
+                Logging.info(`Usuarios conectados: ${this.usuariosConectados}`);
+                socket.emit('online-users', Array.from(this.usuariosConectados.keys()));
+            });
+
             // Desconexión
             socket.on('disconnect', () => {
                 Logging.info(`Socket desconectado: ${socket.id}`);
+                this.eliminarConexionUsuario(socket.handshake.query.username as string, socket.id);
+                socket.broadcast.emit('online-users', Array.from(this.usuariosConectados.keys()));
             });
         });
     }
@@ -110,26 +119,26 @@ export class MensajeService {
             .populate('organizacion', 'name');
     }
 
-    private agregarConexionUsuario(usuarioId: string, socketId: string) {
-        if (this.usuariosConectados.has(usuarioId) && this.usuariosConectados.get(usuarioId)!.includes(socketId)) {
+    private agregarConexionUsuario(username: string, socketId: string) {
+        if (this.usuariosConectados.has(username) && this.usuariosConectados.get(username)!.includes(socketId)) {
             return;
         }
-        if (this.usuariosConectados.has(usuarioId)) {
-            this.usuariosConectados.get(usuarioId)!.push(socketId);
+        if (this.usuariosConectados.has(username)) {
+            this.usuariosConectados.get(username)!.push(socketId);
         } else {
-            this.usuariosConectados.set(usuarioId, [socketId]);
+            this.usuariosConectados.set(username, [socketId]);
         }
     }
 
-    private eliminarConexionUsuario(usuarioId: string, socketId: string) {
-        if (!this.usuariosConectados.has(usuarioId)) {
+    private eliminarConexionUsuario(username: string, socketId: string) {
+        if (!this.usuariosConectados.has(username)) {
             return;
         }
-        if (this.usuariosConectados.get(usuarioId)!.length >= 1 && this.usuariosConectados.get(usuarioId)!.includes(socketId)) {
-            this.usuariosConectados.get(usuarioId)!.splice(this.usuariosConectados.get(usuarioId)!.indexOf(socketId), 1);
+        if (this.usuariosConectados.get(username)!.length >= 1 && this.usuariosConectados.get(username)!.includes(socketId)) {
+            this.usuariosConectados.get(username)!.splice(this.usuariosConectados.get(username)!.indexOf(socketId), 1);
         }
-        if (this.usuariosConectados.get(usuarioId)!.length === 0)
-            this.usuariosConectados.delete(usuarioId);
+        if (this.usuariosConectados.get(username)!.length === 0)
+            this.usuariosConectados.delete(username);
     }
 
 }
