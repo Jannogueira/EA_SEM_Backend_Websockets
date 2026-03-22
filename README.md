@@ -1,3 +1,6 @@
+Ejercicio WebSockets - Jan Nogueira
+Uso de IA gemini 3 (chat) solo para aprender sobre el handshake de sockets y como funciona.
+
 # 🧑‍💻 Ejercicio Práctico: WebSockets con Node.js y Angular
 
 Este repositorio contiene el código base para la sesión práctica sobre **WebSockets**. Aquí exploraremos la comunicación bidireccional en tiempo real entre un cliente (Angular) y un servidor (Node.js + Express + Socket.io).

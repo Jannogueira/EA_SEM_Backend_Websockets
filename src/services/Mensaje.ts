@@ -15,7 +15,7 @@ export class MensajeService {
      */
     public inicializarSockets(): void {
         this.io.on('connection', (socket: Socket) => {
-            Logging.info(`Socket conectado: ${socket.id}`);
+            Logging.info(`Socket conectado: ${socket.id} con usuario: ${socket.handshake.query.username}`);
             this.agregarConexionUsuario(socket.handshake.query.username as string, socket.id);
             this.io.emit('online-users', Array.from(this.usuariosConectados.keys()));
 
