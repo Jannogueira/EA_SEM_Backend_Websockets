@@ -109,4 +109,27 @@ export class MensajeService {
             .populate('usuario', 'name email')
             .populate('organizacion', 'name');
     }
+
+    private agregarConexionUsuario(usuarioId: string, socketId: string) {
+        if (this.usuariosConectados.has(usuarioId) && this.usuariosConectados.get(usuarioId)!.includes(socketId)) {
+            return;
+        }
+        if (this.usuariosConectados.has(usuarioId)) {
+            this.usuariosConectados.get(usuarioId)!.push(socketId);
+        } else {
+            this.usuariosConectados.set(usuarioId, [socketId]);
+        }
+    }
+
+    private eliminarConexionUsuario(usuarioId: string, socketId: string) {
+        if (!this.usuariosConectados.has(usuarioId)) {
+            return;
+        }
+        if (this.usuariosConectados.get(usuarioId)!.length >= 1 && this.usuariosConectados.get(usuarioId)!.includes(socketId)) {
+            this.usuariosConectados.get(usuarioId)!.splice(this.usuariosConectados.get(usuarioId)!.indexOf(socketId), 1);
+        }
+        if (this.usuariosConectados.get(usuarioId)!.length === 0)
+            this.usuariosConectados.delete(usuarioId);
+    }
+
 }
