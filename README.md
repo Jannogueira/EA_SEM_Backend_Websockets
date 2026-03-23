@@ -1,5 +1,9 @@
-Ejercicio WebSockets - Jan Nogueira
-Uso de IA gemini 3 (chat) solo para aprender sobre el handshake de sockets y como funciona.
+# Ejercicio Seminario JWT - Jan Nogueira
+
+**Estudiante:** Jan Nogueira  
+**Nota:** Uso de IA gemini 3 (chat) solo para aprender sobre el handshake de sockets y como funciona.
+
+---
 
 # 🧑‍💻 Ejercicio Práctico: WebSockets con Node.js y Angular
 
